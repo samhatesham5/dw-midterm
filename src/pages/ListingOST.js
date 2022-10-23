@@ -19,6 +19,7 @@ function ListingOST() {
    const getTracks = `${rootURL}chart.tracks.get?chart_name=top&page=1&page_size=5&${country}=it&f_has_lyrics=1?apikey=${my_key}`; 
 
     const [songData, setSongData] = useState([]); 
+    let musicData; 
 
 
     useEffect(() => {
@@ -27,7 +28,7 @@ function ListingOST() {
         .get(`${rootURL}chart.tracks.get?chart_name=top&page=1&page_size=3&country=${country}&f_has_lyrics=1&apikey=${my_key}`)
         .then(function(response) {
             console.log([response]);
-            setSongData(response.data);
+            setSongData(response.data.message.body); 
         })
         .catch((error) => {
             console.log('error', error); 
@@ -37,16 +38,16 @@ function ListingOST() {
      }, []);
 
      //Creating variables for the data we need
-    const {tracks} = useMemo(() => {
-        console.log(songData);
-        const songBody = songData && songData.body;
-        console.log(songBody);
+    const {tracks, songOne, songTwo, songThree} = useMemo(() => {
+        const tracks = songData.track_list;
+        console.log(tracks); 
+        const num = tracks.map((i) => i++);
+        console.log(num.i); 
         return { 
-            tracks: songBody && songBody.track_list, 
+            //songOne: tracks && songData.track_list[0].track,
+            
         };
      }, [songData]);
-
-     console.log(tracks);
 
     return(
         <div>
