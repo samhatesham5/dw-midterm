@@ -19,7 +19,6 @@ function ListingOST() {
    const getTracks = `${rootURL}chart.tracks.get?chart_name=top&page=1&page_size=5&${country}=it&f_has_lyrics=1?apikey=${my_key}`; 
 
     const [songData, setSongData] = useState([]); 
-    let musicData; 
 
 
     useEffect(() => {
@@ -37,17 +36,40 @@ function ListingOST() {
         //Will pass track into here
      }, []);
 
-     //Creating variables for the data we need
-    const {tracks, songOne, songTwo, songThree} = useMemo(() => {
-        const tracks = songData.track_list;
-        console.log(tracks); 
-        const num = tracks.map((i) => i++);
-        console.log(num.i); 
+         /*
+    //Pull album cover
+     const [albumData, setAlbumData] = useState([]); 
+
+     useEffect(() => {
+        axios
+        .get(`${rootURL}artist.albums.get?artist_id=${albumId}&apikey=${my_key}`)
+
+
+     }, []);
+*/ 
+
+     //Creating variables for the data we need (the artist id and the track name)
+    const 
+    { 
+        tracks, 
+        songOne, 
+        songTwo, 
+        songThree, 
+        artists,
+        albumId, 
+    } = useMemo(() => {
+
         return { 
-            //songOne: tracks && songData.track_list[0].track,
-            
-        };
+            tracks: songData.track_list, 
+            songOne: songData.track_list && songData.track_list[0].track.track_name, 
+            songTwo: songData.track_list && songData.track_list[1].track.track_name, 
+            songThree: songData.track_list && songData.track_list[2].track.track_name,
+            artists: songData.track_list && [songData.track_list[0].track.artist_name, songData.track_list[1].track.artist_name, songData.track_list[2].track.artist_name],
+            albumId: songData.track_list && [songData.track_list[0].track.album_id, songData.track_list[1].track.album_id, songData.track_list[2].track.album_id],
+        }; 
      }, [songData]);
+
+     console.log(tracks);
 
     return(
         <div>

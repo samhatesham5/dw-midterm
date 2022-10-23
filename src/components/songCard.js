@@ -1,6 +1,6 @@
 import React from 'react';
 
-function albumCard() {
+function songCard() {
     return (
         <div>
 
@@ -8,4 +8,4 @@ function albumCard() {
     );
 }
 
-export default albumCard; 
+export default songCard; 
