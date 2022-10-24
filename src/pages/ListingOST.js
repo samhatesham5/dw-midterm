@@ -4,7 +4,9 @@ import { useState } from 'react';
 import { useMemo } from 'react'; 
 import { useParams } from 'react-router'; 
 import axios from 'axios'; 
-import { my_key } from '../my_key.js';
+import { my_key }  from '../my_key.js';
+import { picKey } from '../my_key.js'; 
+import SongCard from '../components/SongCard.js'; 
 
 function ListingOST() {
    //This is the rootURL
@@ -15,10 +17,12 @@ function ListingOST() {
    
    //Pulling URL for musixmatch API
    const rootURL =`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/`;
-   const country = "US"; 
-   const getTracks = `${rootURL}chart.tracks.get?chart_name=top&page=1&page_size=5&${country}=it&f_has_lyrics=1?apikey=${my_key}`; 
 
-    const [songData, setSongData] = useState([]); 
+   const [songData, setSongData] = useState([]); 
+   const [country, setCountry] = useState("US");
+
+
+   const getTracks = `${rootURL}chart.tracks.get?chart_name=top&page=1&page_size=5&${country}=it&f_has_lyrics=1?apikey=${my_key}`; 
 
 
     useEffect(() => {
@@ -33,47 +37,71 @@ function ListingOST() {
             console.log('error', error); 
             setSongData([]);
         });
-        //Will pass track into here
      }, []);
 
-         /*
-    //Pull album cover
-     const [albumData, setAlbumData] = useState([]); 
-
-     useEffect(() => {
-        axios
-        .get(`${rootURL}artist.albums.get?artist_id=${albumId}&apikey=${my_key}`)
-
-
-     }, []);
-*/ 
-
-     //Creating variables for the data we need (the artist id and the track name)
     const 
     { 
         tracks, 
         songOne, 
         songTwo, 
         songThree, 
-        artists,
-        albumId, 
+        artistOne,
+        artistTwo,
+        artistThree,
+        albumIdOne,
+        albumIdTwo,
+        albumIdThree, 
     } = useMemo(() => {
-
         return { 
             tracks: songData.track_list, 
             songOne: songData.track_list && songData.track_list[0].track.track_name, 
             songTwo: songData.track_list && songData.track_list[1].track.track_name, 
             songThree: songData.track_list && songData.track_list[2].track.track_name,
-            artists: songData.track_list && [songData.track_list[0].track.artist_name, songData.track_list[1].track.artist_name, songData.track_list[2].track.artist_name],
-            albumId: songData.track_list && [songData.track_list[0].track.album_id, songData.track_list[1].track.album_id, songData.track_list[2].track.album_id],
+            artistOne: songData.track_list && songData.track_list[0].track.artist_name,
+            artistTwo: songData.track_list && songData.track_list[1].track.artist_name,
+            artistThree: songData.track_list && songData.track_list[2].track.artist_name,
+            albumIdOne: songData.track_list && songData.track_list[0].track.album_id, 
+            albumIdTwo: songData.track_list && songData.track_list[1].track.album_id,
+            albumIdThree:songData.track_list && songData.track_list[2].track.album_id,
+        
         }; 
      }, [songData]);
 
-     console.log(tracks);
+     console.log();
+
+    //Pulling an image based on the song name
+    const picURL = `https://cors-anywhere.herokuapp.com/https://api.unsplash.com/photos/?client_id=${picKey}`;
+
+    const [picData, setPicData] = useState([]); 
+
+    useEffect(() => {
+        axios
+        .get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=${songOne}&client_id=${picKey}`)
+        .then(function(response) {
+            console.log(response);
+            setPicData(response.data);
+        })
+        .catch((error) => {
+            console.log('error', error); 
+            setSongData([]);
+        });
+    }, []);
+
 
     return(
-        <div>
-            <h1>Start of Assign</h1>
+        <div className= "wholePage">
+            <h1>Hi</h1>
+            <SongCard
+            tracks = {tracks}
+            songOne = {songOne}
+            songTwo = {songTwo}
+            songThree = {songThree}
+            artistOne = {artistOne}
+            artistTwo = {artistTwo}
+            artistThree = {artistThree}
+            />
+
+
         </div> 
 
     );

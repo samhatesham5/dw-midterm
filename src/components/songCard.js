@@ -1,6 +1,14 @@
 import React from 'react';
 
-function songCard() {
+function SongCard(
+    tracks,
+    songOne,
+    songTwo,
+    songThree,
+    artistOne,
+    artistTwo,
+    artistThree,
+) {
     return (
         <div>
 
@@ -8,4 +16,4 @@ function songCard() {
     );
 }
 
-export default songCard; 
+export default SongCard; 
