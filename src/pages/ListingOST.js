@@ -7,6 +7,8 @@ import axios from 'axios';
 import { my_key }  from '../my_key.js';
 import { picKey } from '../my_key.js'; 
 import SongCard from '../components/SongCard.js'; 
+import Header from '../components/Header.js'; 
+import Landing from '../components/Landing.js';
 
 function ListingOST() {
    //This is the rootURL
@@ -41,66 +43,112 @@ function ListingOST() {
 
     const 
     { 
-        tracks, 
+        artists,
+        tracks,
         songOne, 
         songTwo, 
         songThree, 
         artistOne,
         artistTwo,
         artistThree,
-        albumIdOne,
-        albumIdTwo,
-        albumIdThree, 
     } = useMemo(() => {
         return { 
-            tracks: songData.track_list, 
             songOne: songData.track_list && songData.track_list[0].track.track_name, 
             songTwo: songData.track_list && songData.track_list[1].track.track_name, 
             songThree: songData.track_list && songData.track_list[2].track.track_name,
             artistOne: songData.track_list && songData.track_list[0].track.artist_name,
             artistTwo: songData.track_list && songData.track_list[1].track.artist_name,
             artistThree: songData.track_list && songData.track_list[2].track.artist_name,
-            albumIdOne: songData.track_list && songData.track_list[0].track.album_id, 
-            albumIdTwo: songData.track_list && songData.track_list[1].track.album_id,
-            albumIdThree:songData.track_list && songData.track_list[2].track.album_id,
-        
+            tracks: songData.track_list && [songData.track_list[0].track.track_name, songData.track_list[1].track.track_name, songData.track_list[2].track.track_name], 
+            artists:songData.track_list && [songData.track_list[0].track.artist_name, songData.track_list[1].track.artist_name, songData.track_list[2].track.artist_name],
         }; 
      }, [songData]);
 
-     console.log();
 
     //Pulling an image based on the song name
     const picURL = `https://cors-anywhere.herokuapp.com/https://api.unsplash.com/photos/?client_id=${picKey}`;
 
-    const [picData, setPicData] = useState([]); 
+    const [picOneData, setPicData] = useState([]); 
+    const [picTwoData, setTwoData ] = useState([]);
+    const [picThreeData, setThreeData ] = useState([]);
 
+     //Quering the data from the API for each song (Basically assessing different photos depending on song name)
     useEffect(() => {
         axios
         .get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=${songOne}&client_id=${picKey}`)
         .then(function(response) {
             console.log(response);
-            setPicData(response.data);
+            setPicData(response.data.results);
         })
         .catch((error) => {
             console.log('error', error); 
-            setSongData([]);
+            setPicData([]);
+        })
+        axios.get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=${songTwo}&client_id=${picKey}`)
+        .then(function(response) {
+            console.log([response]);
+            setTwoData(response.data.results);
+        })
+        .catch((error) => {
+            console.log('error', error); 
+            setTwoData([]);
+        })
+        axios.get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=${songThree}&client_id=${picKey}`)
+        .then(function(response) {
+            console.log([response]);
+            setThreeData(response.data.results);
+        })
+        .catch((error) => {
+            console.log('error', error); 
+            setThreeData([]);
         });
+
     }, []);
+
+    //Storing picture values 
+
+    const { picOne } = useMemo(()=> {
+        return {
+            picOne: picOneData[0] && picOneData[0].urls.small,
+
+        };
+
+    }, [picOneData]);
+
+    const { picTwo } = useMemo(() => {
+        return{
+            picTwo: picTwoData[0] && picTwoData[1].urls.small,
+        };
+    }, [picTwoData]);
+
+    const { picThree } = useMemo (() =>  {
+        return {
+            picThree: picThreeData[0] && picThreeData[2].urls.small,
+        };
+    }, [picThreeData])
 
 
     return(
         <div className= "wholePage">
-            <h1>Hi</h1>
-            <SongCard
-            tracks = {tracks}
-            songOne = {songOne}
-            songTwo = {songTwo}
-            songThree = {songThree}
-            artistOne = {artistOne}
-            artistTwo = {artistTwo}
-            artistThree = {artistThree}
-            />
-
+            <Header/>
+            <Landing/>
+            <div className= "everyCard"> 
+                <SongCard 
+                    song = {songOne}
+                    artist = {artistOne}
+                    picture = {picOne}
+                />
+                <SongCard 
+                    song = {songTwo}
+                    artist = {artistTwo}
+                    picture = {picTwo}
+                />
+                <SongCard 
+                    song = {songThree}
+                    artist = {artistThree}
+                    picture = {picThree}
+                />
+         </div>
 
         </div> 
 

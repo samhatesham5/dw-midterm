@@ -1,0 +1,117 @@
+/* Default for whole page */
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    font-family: 'Inter Tight', sans-serif;
+}
+
+body {
+    background-image: url('assets/back.png');
+    background-position: center;
+}
+
+.wholePage {
+    display: flex;
+    flex-direction: column;
+}
+
+.everyCard {
+    display: flex;
+    margin: 5%;
+    flex-basis: 75%; 
+    flex-direction: column
+
+}
+
+/*
+
+---HEADER---
+
+*/
+
+.navBar {
+    display: flex; 
+    padding: 10px; 
+    flex-direction: row; 
+    justify-content: space-between;
+
+}
+
+.name {
+    padding: 0px 5px; 
+    color: white; 
+      
+}
+
+a, a:visited {
+    padding: 5px 0px; 
+    text-decoration: none;
+    color: white; 
+    margin: 0px 10px; 
+}
+
+
+.navBar > h2 {
+    padding: 10px 0px; 
+    font-style: italic;
+}
+
+/*
+
+---LANDING PAGE---
+
+*/
+
+.wholeLanding{
+    height: 100vh; 
+}
+
+/* 
+
+---CARDS---
+
+Adjust the width of the cards (look at exercise 2 for help)
+
+*/
+
+.card {
+    background-color: white;
+    border: black solid;
+    display: flex;
+    flex-direction: column; 
+    margin: 5%;  
+    max-width:315px; 
+    padding: 20px; 
+
+}
+
+.image {
+   flex-basis: 60%; 
+   width: 100%; 
+   padding: 0; 
+   margin: 0; 
+}
+
+.image > img {
+    width: 100%; 
+}
+
+
+
+
+/*
+
+---WEBPAGE MEDIA QUERY---
+
+Fix nav bar for responsive
+
+*/
+
+@media only screen and (min-width: 1000px) {
+    .everyCard{
+        flex-direction: row; 
+    }
+
+}
