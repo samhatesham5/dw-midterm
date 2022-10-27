@@ -2,13 +2,10 @@ import React from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay, faFastBackward, faFastForward } from "@fortawesome/free-solid-svg-icons";
 
-function SongCard({ song, artist, picture, genre }) 
-    {
+function SongCard({ song, artist, picture, genre }) {
     //The card background is supposed to change based on the specific genre of the song
     let backColor = '';
     let textColor = 'black';
-
-    console.log(genre == 'Pop');
 
     function changeColor(genre) {
         switch (genre) {
@@ -36,27 +33,27 @@ function SongCard({ song, artist, picture, genre })
     }
 
     //Dance and Jazz have a darker background so I set the text color to white for those
-    if (changeColor(genre) == "Dance" || changeColor(genre)== "Jazz") {
-        function changeText(textColor) {
+    function changeText(textColor) {
+        if (backColor ===  '#492C31' || backColor === '#413245')
             return textColor = 'white'; 
-        }
-    }
-
+        else return textColor = 'black'; 
+    };
+    
     
     return (
-        <div style={{backgroundColor: changeColor(genre), color: textColor, }} className="card">
+        <div style={{backgroundColor: changeColor(genre), color: changeText(textColor), }} className="card">
             <div className="image">
-                <img src= {picture} alt="Stock Photo Image of a Musician"/>
+                <img src={picture} alt="Stock Photo Image of a Musician"/>
             </div> 
-            <div className ="text"> 
+            <div className="text"> 
                 <p>{song}</p>
                 <p>{artist}</p>
             </div>
             {/*This contains all the icons we're using for the fake music player*/}
             <div className = "musicPlayer"> 
-                <FontAwesomeIcon className ="backwards" icon={faFastBackward} />
-                <FontAwesomeIcon className ="playIcon" icon={faCirclePlay} />
-                <FontAwesomeIcon className ="forwards"  icon={faFastForward} />
+                <FontAwesomeIcon className="backwards" icon={faFastBackward} />
+                <FontAwesomeIcon className="playIcon" icon={faCirclePlay} />
+                <FontAwesomeIcon className="forwards"  icon={faFastForward} />
             </div>
         </div>
     );

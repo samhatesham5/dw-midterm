@@ -12,8 +12,6 @@ import Landing from '../components/Landing.js';
 import { useSearchParams} from "react-router-dom";
 
 function ListingOST() {
-   //This is the rootURL
-   //const { track } = useParams;
 
    //Using cors amywhere to help with http:// trouble
    //If you get a forbidden error, go back to the demo website to get access again. It's a whole thing...
@@ -23,7 +21,7 @@ function ListingOST() {
 
    const [songData, setSongData] = useState([]); 
 
-   //Using searchParams so that user can find top songs of any country
+   //Using searchParams so that user can find top songs of any country using two character code
    const [country, setCountry] = useState("US");
    const [searchParams] = useSearchParams();
 
@@ -69,13 +67,27 @@ function ListingOST() {
             artistTwo: songData.track_list && songData.track_list[1].track.artist_name,
             artistThree: songData.track_list && songData.track_list[2].track.artist_name,
             //Primary genres of different tracks
-            genreOne: songData.track_list && songData.track_list[0].track.primary_genres.music_genre_list[0].music_genre.music_genre_name,
-            genreTwo: songData.track_list && songData.track_list[1].track.primary_genres.music_genre_list[0].music_genre.music_genre_name,
-            genreThree: songData.track_list && songData.track_list[2].track.primary_genres.music_genre_list[0].music_genre.music_genre_name, 
-
-            
+            genreOne: songData.track_list && songData.track_list[0].track.primary_genres.music_genre_list,
+            genreTwo: songData.track_list &&  songData.track_list[1].track.primary_genres.music_genre_list,
+            genreThree: songData.track_list && songData.track_list[2].track.primary_genres.music_genre_list, 
         }; 
      }, [songData]);
+
+     //Fixing the genre so that it doesn't break if there is no music genre
+     const fixGenre1 = useMemo(() => {
+        if (!genreOne || genreOne.length === 0) return "Pop";
+        return genreOne[0].music_genre.music_genre_name;
+     }, [genreOne]);
+
+     const fixGenre2 = useMemo(() => {
+        if (!genreTwo || genreTwo.length === 0 ) return "Pop";
+        return genreTwo[0].music_genre.music_genre_name;
+     }, [genreTwo]);
+
+     const fixGenre3 = useMemo(() => {
+        if (!genreThree || genreThree.length === 0) return "Pop";
+        return genreThree[0].music_genre.music_genre_name;
+     }, [genreThree]);
 
 
     //Pulling a random image 
@@ -132,26 +144,26 @@ function ListingOST() {
         <div className= "wholePage">
             <Header/>
             <Landing
-                country = {country}
+                country={country}
             />
             <div className= "everyCard"> 
                 <SongCard 
-                    song = {songOne}
-                    artist = {artistOne}
-                    picture = {picOne}
-                    genre = {genreOne}
+                    song={songOne}
+                    artist={artistOne}
+                    picture={picOne}
+                    genre={fixGenre1}
                 />
                 <SongCard 
-                    song = {songTwo}
-                    artist = {artistTwo}
-                    picture = {picTwo}
-                    genre = {genreTwo}
+                    song={songTwo}
+                    artist={artistTwo}
+                    picture={picTwo}
+                    genre ={fixGenre2}
                 />
                 <SongCard 
-                    song = {songThree}
-                    artist = {artistThree}
-                    picture = {picThree}
-                    genre = {genreThree}
+                    song={songThree}
+                    artist={artistThree}
+                    picture={picThree}
+                    genre={fixGenre3}
                 />
          </div>
          <footer>Sam Whitley * Dynamic Web 2022 * Midterm </footer>

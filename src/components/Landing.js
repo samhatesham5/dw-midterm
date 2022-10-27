@@ -12,7 +12,6 @@ function Landing({country}) {
     else
         state = country;
 
-
     return (
         <div className="wholeLanding">
             <h1>the top 3 songs in {state}...</h1>
