@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react'; 
 import { useMemo } from 'react'; 
@@ -9,6 +9,7 @@ import { picKey } from '../my_key.js';
 import SongCard from '../components/SongCard.js'; 
 import Header from '../components/Header.js'; 
 import Landing from '../components/Landing.js';
+import { useSearchParams} from "react-router-dom";
 
 function ListingOST() {
    //This is the rootURL
@@ -21,16 +22,19 @@ function ListingOST() {
    const rootURL =`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/`;
 
    const [songData, setSongData] = useState([]); 
+
+   //Using searchParams so that user can find top songs of any country
    const [country, setCountry] = useState("US");
-
-
-   const getTracks = `${rootURL}chart.tracks.get?chart_name=top&page=1&page_size=5&${country}=it&f_has_lyrics=1?apikey=${my_key}`; 
-
+   const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        //If get works, then do something
+        //Quering the country data
+        const countryQuery = searchParams.get("country") || country;
+        setCountry(countryQuery);
+
+        //Quering the song data
         axios
-        .get(`${rootURL}chart.tracks.get?chart_name=top&page=1&page_size=3&country=${country}&f_has_lyrics=1&apikey=${my_key}`)
+        .get(`${rootURL}chart.tracks.get?chart_name=top&page=1&page_size=3&country=${countryQuery}&f_has_lyrics=1&apikey=${my_key}`)
         .then(function(response) {
             console.log([response]);
             setSongData(response.data.message.body); 
@@ -41,10 +45,10 @@ function ListingOST() {
         });
      }, []);
 
+    //Storing all the variables we want from the track_list
+
     const 
     { 
-        artists,
-        tracks,
         songOne, 
         songTwo, 
         songThree, 
@@ -59,8 +63,8 @@ function ListingOST() {
             artistOne: songData.track_list && songData.track_list[0].track.artist_name,
             artistTwo: songData.track_list && songData.track_list[1].track.artist_name,
             artistThree: songData.track_list && songData.track_list[2].track.artist_name,
-            tracks: songData.track_list && [songData.track_list[0].track.track_name, songData.track_list[1].track.track_name, songData.track_list[2].track.track_name], 
-            artists:songData.track_list && [songData.track_list[0].track.artist_name, songData.track_list[1].track.artist_name, songData.track_list[2].track.artist_name],
+
+            
         }; 
      }, [songData]);
 
@@ -72,45 +76,32 @@ function ListingOST() {
     const [picTwoData, setTwoData ] = useState([]);
     const [picThreeData, setThreeData ] = useState([]);
 
-     //Quering the data from the API for each song (Basically assessing different photos depending on song name)
+     //Quering the data from the API so that we get "music" image from the API 
+
     useEffect(() => {
         axios
-        .get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=${songOne}&client_id=${picKey}`)
+        .get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=music/?orientation=landscape&client_id=${picKey}`)
         .then(function(response) {
             console.log(response);
             setPicData(response.data.results);
-        })
-        .catch((error) => {
-            console.log('error', error); 
-            setPicData([]);
-        })
-        axios.get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=${songTwo}&client_id=${picKey}`)
-        .then(function(response) {
-            console.log([response]);
             setTwoData(response.data.results);
-        })
-        .catch((error) => {
-            console.log('error', error); 
-            setTwoData([]);
-        })
-        axios.get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=${songThree}&client_id=${picKey}`)
-        .then(function(response) {
-            console.log([response]);
             setThreeData(response.data.results);
         })
         .catch((error) => {
             console.log('error', error); 
+            setPicData([]);
+            setTwoData([]);
             setThreeData([]);
         });
 
     }, []);
 
-    //Storing picture values 
+    //Storing picture values (The pictures will be pretty general)
+    //but index position is changed so at least they won't be the same
 
     const { picOne } = useMemo(()=> {
         return {
             picOne: picOneData[0] && picOneData[0].urls.small,
-
         };
 
     }, [picOneData]);
@@ -131,7 +122,9 @@ function ListingOST() {
     return(
         <div className= "wholePage">
             <Header/>
-            <Landing/>
+            <Landing
+                country = {country}
+            />
             <div className= "everyCard"> 
                 <SongCard 
                     song = {songOne}
@@ -149,11 +142,34 @@ function ListingOST() {
                     picture = {picThree}
                 />
          </div>
-
-        </div> 
+         <footer>Sam Whitley * Dynamic Web 2022 * Midterm </footer>
+     </div> 
 
     );
 
 }
 
 export default ListingOST; 
+
+/*
+
+   axios.get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=music/?orientation=landscape&client_id=${picKey}`)
+        .then(function(response) {
+            console.log([response]);
+            setTwoData(response.data.results);
+        })
+        .catch((error) => {
+            console.log('error', error); 
+            setTwoData([]);
+        })
+        axios.get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=music/?orientation=landscape&client_id=${picKey}`)
+        .then(function(response) {
+            console.log([response]);
+            setThreeData(response.data.results);
+        })
+        .catch((error) => {
+            console.log('error', error); 
+            setThreeData([]);
+        });
+
+*/
