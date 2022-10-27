@@ -91,8 +91,7 @@ function ListingOST() {
 
 
     //Pulling a random image 
-    const picURL = `https://cors-anywhere.herokuapp.com/https://api.unsplash.com/photos/?client_id=${picKey}`;
-
+    
     const [picOneData, setPicData] = useState([]); 
     const [picTwoData, setTwoData ] = useState([]);
     const [picThreeData, setThreeData ] = useState([]);
