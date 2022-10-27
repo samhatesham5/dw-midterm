@@ -55,21 +55,30 @@ function ListingOST() {
         artistOne,
         artistTwo,
         artistThree,
+        genreOne,
+        genreTwo,
+        genreThree, 
     } = useMemo(() => {
         return { 
+            //Song titles
             songOne: songData.track_list && songData.track_list[0].track.track_name, 
             songTwo: songData.track_list && songData.track_list[1].track.track_name, 
             songThree: songData.track_list && songData.track_list[2].track.track_name,
+            //Artist names
             artistOne: songData.track_list && songData.track_list[0].track.artist_name,
             artistTwo: songData.track_list && songData.track_list[1].track.artist_name,
             artistThree: songData.track_list && songData.track_list[2].track.artist_name,
+            //Primary genres of different tracks
+            genreOne: songData.track_list && songData.track_list[0].track.primary_genres.music_genre_list[0].music_genre.music_genre_name,
+            genreTwo: songData.track_list && songData.track_list[1].track.primary_genres.music_genre_list[0].music_genre.music_genre_name,
+            genreThree: songData.track_list && songData.track_list[2].track.primary_genres.music_genre_list[0].music_genre.music_genre_name, 
 
             
         }; 
      }, [songData]);
 
 
-    //Pulling an image based on the song name
+    //Pulling a random image 
     const picURL = `https://cors-anywhere.herokuapp.com/https://api.unsplash.com/photos/?client_id=${picKey}`;
 
     const [picOneData, setPicData] = useState([]); 
@@ -130,16 +139,19 @@ function ListingOST() {
                     song = {songOne}
                     artist = {artistOne}
                     picture = {picOne}
+                    genre = {genreOne}
                 />
                 <SongCard 
                     song = {songTwo}
                     artist = {artistTwo}
                     picture = {picTwo}
+                    genre = {genreTwo}
                 />
                 <SongCard 
                     song = {songThree}
                     artist = {artistThree}
                     picture = {picThree}
+                    genre = {genreThree}
                 />
          </div>
          <footer>Sam Whitley * Dynamic Web 2022 * Midterm </footer>
@@ -151,25 +163,3 @@ function ListingOST() {
 
 export default ListingOST; 
 
-/*
-
-   axios.get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=music/?orientation=landscape&client_id=${picKey}`)
-        .then(function(response) {
-            console.log([response]);
-            setTwoData(response.data.results);
-        })
-        .catch((error) => {
-            console.log('error', error); 
-            setTwoData([]);
-        })
-        axios.get(`https://cors-anywhere.herokuapp.com/https://api.unsplash.com/search/photos/?query=music/?orientation=landscape&client_id=${picKey}`)
-        .then(function(response) {
-            console.log([response]);
-            setThreeData(response.data.results);
-        })
-        .catch((error) => {
-            console.log('error', error); 
-            setThreeData([]);
-        });
-
-*/

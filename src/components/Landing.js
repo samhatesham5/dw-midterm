@@ -2,8 +2,11 @@ import react from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
+//Creating our landing page (user will scroll down for the results)
 function Landing({country}) {
+    //Saying "the top 3 song in US" doesn't sound right, so I'm fixing it
     let state = "";
+    //if it is the US, add "the" in front
     if (country == "US") 
         state = "the US";
     else

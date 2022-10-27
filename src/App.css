@@ -9,6 +9,8 @@
 
 body {
     background-image: url('assets/back.png');
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center;
 }
 
@@ -22,7 +24,7 @@ body {
     margin: 5%;
     flex-direction: column;
     justify-content: center;
-    height: 170vh;
+    height: 200vh;
 
 }
 
@@ -117,10 +119,9 @@ Adjust the width of the cards (look at exercise 2 for help)
 */
 
 .card {
-    background-color: #F2EEE8;
     border: black solid;
     display: flex;
-    flex-direction: row; 
+    flex-direction: column;
     margin: 100px 25px;  
     min-width:315px; 
     padding: 20px; 
