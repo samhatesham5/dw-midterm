@@ -7,7 +7,7 @@ import axios from 'axios';
 import { my_key }  from '../my_key.js';
 import { picKey } from '../my_key.js'; 
 import SongCard from '../components/SongCard.js'; 
-import Header from '../components/Header.js'; 
+import Header from 'src/components/Header.js'; 
 import Landing from '../components/Landing.js';
 import { useSearchParams} from "react-router-dom";
 
