@@ -6,9 +6,9 @@ import { useParams } from 'react-router';
 import axios from 'axios'; 
 import { my_key }  from '../my_key.js';
 import { picKey } from '../my_key.js'; 
-import SongCard from '../components/SongCard.js'; 
+import SongCard from 'src/components/SongCard.js'; 
 import Header from 'src/components/Header.js'; 
-import Landing from '../components/Landing.js';
+import Landing from 'src/components/Landing.js';
 import { useSearchParams} from "react-router-dom";
 
 function ListingOST() {
